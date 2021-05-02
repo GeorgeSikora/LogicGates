@@ -102,6 +102,7 @@ function switchMode(mode) {
         case 'hand': cursor('pointer'); break;
         case 'move': cursor('move'); break;
         case 'wire': cursor('/assets/wire.png'); break;
+        case 'jsonexport': console.log(JSON.stringify(entities)); break;
     }
 } 
 

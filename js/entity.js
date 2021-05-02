@@ -5,6 +5,8 @@ class Entity {
         this.w = w;
         this.h = h;
 
+        this.class = this.constructor.name;
+
         this.selected = false;
         this.bindObj = null;
         this.bindShift = {x: 0, y:0};
