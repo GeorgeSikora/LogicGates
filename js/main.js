@@ -5,6 +5,9 @@ let entities = [];
 let selectedEntity;
 let selectDeltaPos = {x:0, y:0};
 
+let grid = 32;
+let cursorMode = 'hand';
+
 function setup() {
     createCanvas(displayWidth, displayHeight);
 
@@ -19,7 +22,10 @@ function setup() {
 
 function draw() {
 
+    //cursor('default');
+
     background(backgroundColor);
+    drawGrid();
 
     for (var i = 0; i < entities.length; i++) {
         var e = entities[i];
@@ -44,8 +50,11 @@ function draw() {
     if (selectedEntity) {
 
         if (mouseIsPressed) {
-            selectedEntity.pos.x = mouseX + selectDeltaPos.x;
-            selectedEntity.pos.y = mouseY + selectDeltaPos.y;
+            selectedEntity.pos.x = mouseX + selectDeltaPos.x + grid/2;
+            selectedEntity.pos.x -= selectedEntity.pos.x % grid;
+
+            selectedEntity.pos.y = mouseY + selectDeltaPos.y + grid/2;
+            selectedEntity.pos.y -= selectedEntity.pos.y % grid;
         }
 
     }
@@ -72,4 +81,50 @@ function mouseReleased() {
 
 function addVec(vec1, vec2) {
     return {x: vec1.x + vec2.x, y: vec1.y + vec2.y};
+}
+
+function drawGrid() {
+    strokeWeight(1);
+    stroke(0);
+    for (var x = 0; x < width; x+=grid) {
+        line(x, 0, x, height);
+    }
+    for (var y = 0; y < height; y+=grid) {
+        line(0, y, width, y);
+    }
+}
+
+function switchMode(mode) {
+
+    cursorMode = mode;
+
+    switch(mode) {
+        case 'hand': cursor('pointer'); break;
+        case 'move': cursor('move'); break;
+        case 'wire': cursor('/assets/wire.png'); break;
+    }
+} 
+
+// LINE/POINT
+function linePoint(x1, y1, x2, y2, px, py) {
+
+    // get distance from the point to the two ends of the line
+    const d1 = dist(px,py, x1,y1);
+    const d2 = dist(px,py, x2,y2);
+  
+    // get the length of the line
+    const lineLen = dist(x1,y1, x2,y2);
+  
+    // since floats are so minutely accurate, add
+    // a little buffer zone that will give collision
+    const buffer = 0.1;    // higher # = less accurate
+  
+    // if the two distances are equal to the line's 
+    // length, the point is on the line!
+    // note we use the buffer here to give a range, 
+    // rather than one #
+    if (d1+d2 >= lineLen-buffer && d1+d2 <= lineLen+buffer) {
+      return true;
+    }
+    return false;
 }
