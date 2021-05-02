@@ -65,7 +65,7 @@ class Pin extends Entity {
     }
 
     mousePressed() {
-        if(this.mouseOver() && !this.connection) {
+        if(this.mouseOver() && (!this.connection || this.type == OUTPUT)) {
             wiring = this;
             wiringType = this.type;
         }

@@ -8,10 +8,13 @@ let selectDeltaPos = {x:0, y:0};
 function setup() {
     createCanvas(displayWidth, displayHeight);
 
-    entities.push(new Generator(200, 100, 2));
-    entities.push(new Switch(300, 60));
+    entities.push(new Switch(200, 100));
+    entities.push(new Light(500, 200));
+
+    entities.push(new Generator(200, 400, 1));
+    entities.push(new Light(500, 500));
     
-    entities.push(new Light(300, 300));
+    entities.push(new Generator(200, 600, 8));
 }
 
 function draw() {
