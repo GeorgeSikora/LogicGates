@@ -8,7 +8,7 @@ let selectDeltaPos = {x:0, y:0};
 function setup() {
     createCanvas(displayWidth, displayHeight);
 
-    entities.push(new Switch(200, 100));
+    entities.push(new Generator(200, 100, 2));
     entities.push(new Switch(300, 60));
     
     entities.push(new Light(300, 300));
@@ -21,7 +21,8 @@ function draw() {
     for (var i = 0; i < entities.length; i++) {
         var e = entities[i];
         e.rebind();
-        e.draw();
+        if (e.draw) e.draw();
+        if (e.loop) e.loop();
     }
     
     if (mouseIsPressed && startMousePressTimer+50 < millis() && !selectedEntity) {
